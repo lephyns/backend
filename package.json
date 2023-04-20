@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend da aplicação Petvax",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lephyns/petvax-backend.git"
+  },
+  "keywords": [
+    "petvax",
+    "backend"
+  ],
+  "author": "Rafael Rabelo da Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lephyns/petvax-backend/issues"
+  },
+  "homepage": "https://github.com/lephyns/petvax-backend#readme",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.1",
+    "mongoose": "^7.0.4"
+  }
+}
