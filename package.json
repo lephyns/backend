@@ -23,6 +23,7 @@
   "homepage": "https://github.com/lephyns/petvax-backend#readme",
   "dependencies": {
     "@hapi/hapi": "^21.3.1",
+    "md5": "^2.3.0",
     "mongoose": "^7.0.4"
   }
 }
