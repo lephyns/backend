@@ -5,8 +5,8 @@ const auth = async (userId) => {
 
     const foundUser = await userModel.findById(userId) //findById função do mongoose para buscar o usuário pelo ID
 
-    if(!foundUser)
-        throw {error: 'Unauthorized', code:401}
+    if (!foundUser)
+        throw { error: 'Unauthorized', code: 401 }
 }
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
         }
 
         if (request.payload === null) //Questiona se o payload é nulo
-            return h.response({message:'Not json'}).code(400)
+            return h.response({ message: 'Not json' }).code(400)
 
         // console.log(request.payload) //Pega o valor da requisição e exibe no console
 
@@ -49,17 +49,18 @@ module.exports = {
         // console.log(!contact.name) //O operador ! questiona se o objeto contact.name é undefined e exibe no console
 
         if (!pet.petName) //Verifica se o objeto contact.name é undefined 
-            return h.response({message:'Name is required.'}).code(409) //Se cair dentro desse if irá devolver o status code 409. Se cair nesse if o código é finalizado
+            return h.response({ message: 'Name is required.' }).code(409) //Se cair dentro desse if irá devolver o status code 409. Se cair nesse if o código é finalizado
 
         if (!pet.petRespContact1)
-            return h.response({message:'Number is required.'}).code(409)//Além de retornar o statuscode ele também devolve uma mensagem que é verificada no teste `post.test.js`
+            return h.response({ message: 'Number is required.' }).code(409)//Além de retornar o statuscode ele também devolve uma mensagem que é verificada no teste `post.test.js`
 
-        const dup = await petModel.findOne({petName: pet.petName, userId: userId}).exec(); //Essa função busca um registro no banco
+        const dup = await petModel.findOne({ petName: pet.petName, userId: userId }).exec(); //Essa função busca um registro no banco
 
         if (dup)
-        return h.response({error: 'Duplicated pet.'}).code(409) //Retorna mensagem se o numero de telefone que está tentando cadastrar é o mesmo de um já existente
+            return h.response({ error: 'Duplicated pet.' }).code(409) //Retorna mensagem se o numero de telefone que está tentando cadastrar é o mesmo de um já existente
         try {
             let result = await pet.save() //Chamado o objeto contact e invocado a função salvar. Desta forma será salvo as informações no banco de dados através do Mongoose
+            console.log(pet)
             return h.response(result).code(200); //Na `response` estamos enviando o resultado esperado. Chamado a função `code()` colocando o status 200
         } catch (error) {
             return h.response(error).code(500)
@@ -77,18 +78,18 @@ module.exports = {
 
         try {
 
-            const user = await petModel.findOne({ _id: request.params.petId, userId: userId}) //Irá buscar um contato com o contato ID passado no parâmetro que no caso é o ID do contato que será deletado do banco
+            const user = await petModel.findOne({ _id: request.params.petId, userId: userId }) //Irá buscar um contato com o contato ID passado no parâmetro que no caso é o ID do contato que será deletado do banco
 
-            if(!user)
-                return h.response({error: 'There is no pet with that id.'}).code(404) //Se não encontrar um registro com o contatoId e UserId informado no header será exibido 404
+            if (!user)
+                return h.response({ error: 'There is no pet with that id.' }).code(404) //Se não encontrar um registro com o contatoId e UserId informado no header será exibido 404
 
-            await petModel.deleteOne({ _id: request.params.petId, userId: userId}) //O campo precisa ser `_id` porque é a coluna do banco.
-            return h.response({}).code(204) //Código 204 (no content)
+            await petModel.deleteOne({ _id: request.params.petId, userId: userId }) //O campo precisa ser `_id` porque é a coluna do banco.
+            return h.response({ message: 'Pet removed successfully.' }).code(204) //Código 204 (no content)
         } catch (error) {
             return h.response(error).code(500) //Se algum erro ocorrer será visualizado
         }
     },
-    
+
     async list(request, h) {
 
         const userId = request.headers.authorization //Obtém o usuário do header
@@ -99,9 +100,32 @@ module.exports = {
             return h.response(error).code(error.code)
         }
 
-        const pets = await petModel.find({userId: userId}).exec(); //Busca as modelagens no banco de dados
+        const pets = await petModel.find({ userId: userId }).exec(); //Busca as modelagens no banco de dados
         return pets;
+    },
+
+    async getPetById(request, h) {
+
+        const userId = request.headers.authorization // Obtém o usuário do header
+
+        try {
+            await auth(userId)
+        } catch (error) {
+            return h.response(error).code(error.code)
+        }
+
+        try {
+            const pet = await petModel.findOne({ _id: request.params.petId, userId: userId }).exec() // Busca um pet com o petId e userId informados no header
+
+            if (!pet)
+                return h.response({ error: 'There is no pet with that id.' }).code(404) // Se não encontrar um registro com o petId e userId informados no header, exibe 404
+
+            return h.response(pet).code(200) // Retorna o pet encontrado com o status 200
+        } catch (error) {
+            return h.response(error).code(500) // Se algum erro ocorrer, exibe o erro com o status 500
+        }
     }
+
 }
 
 // async para ser assíncrona e ter uma promessa

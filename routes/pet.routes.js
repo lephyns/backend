@@ -15,6 +15,11 @@ module.exports = [
         method: 'DELETE', 
         path: '/pet/{petId}',
         handler: petController.remove
+    },
+    {
+        method: 'GET',
+        path: '/pet/{petId}',
+        handler: petController.getPetById
     }
 ]
 
