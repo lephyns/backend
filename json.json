@@ -1,0 +1,38 @@
+{
+    "petName": "",
+    "petGender": "",
+    "petBirth": "",
+    "petBreed": "",
+    "petSpecies": "",
+    "petWeight": "",
+    
+    "vaccineDate": "",
+    "vaccineName": "",
+    "vaccineInfo": "",
+    "vaccinePetWeight": "",
+    "vaccineNext": "",
+    "vaccineDoctor": "",
+
+    "vermifugeDate": "",
+    "vermifugeName": "",
+    "vermifugeQty": "",
+    "vermifugeInfo": "",
+    "vermifugePetWeight": "",
+    "vermifugeNext": "",
+    "vermifugeDoctor": "",
+
+    "antiFleaDate": "",
+    "antiFleaName": "",
+    "antiFleaInfo": "",
+    "antiFleaPetWeight": "",
+    "antiFleaNext": "",
+    "antiFleaDoctor": "",
+
+    "otherProceduresDate": "",
+    "otherProceduresName": "",
+    "otherProceduresInfo": "",
+    "otherProceduresPetWeight": "",
+    "otherProceduresDoctor": "",
+    "petId": "",
+    "userId": ""
+}
