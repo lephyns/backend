@@ -1,28 +1,76 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const Schema = mongoose.Schema
-
-const petSchema = new Schema({
-    petName: String,
-    petSpecies: String,
-    petGender: String,
-    petBreed: String,
-    petWeight: Number, // Alterado para Number
-    petBirth: Date, // Alterado para Date
-    petAdStreet: String,
-    petAdNeighborhood: String,
-    petAdNumber: String,
-    petAdInfo: String,
-    petAdCep: String,
-    petAdCity: String,
-    petAdState: String,
-    petResFirstName: String,
-    petRespLastName: String,
-    petRespContact1: String,
-    petRespContact2: String,
-    userId: String
+var petSchema = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'user'
+    },
+    petName: {
+        type: String
+    },
+    petSpecies: {
+        type: String
+    },
+    petGender: {
+        type: String
+    },
+    petBreed: {
+        type: String
+    },
+    petWeight: {
+        type: Number
+    },
+    petBirth: {
+        type: String
+    },
+    petCastrated: {
+        type: String
+    },
+    petAddress: {
+        petAdStreet: {
+            type: String
+        },
+        petAdNeighborhood: {
+            type: String
+        },
+        petAdNumber: {
+            type: String
+        },
+        petAdInfo: {
+            type: String
+        },
+        petAdCep: {
+            type: String
+        },
+        petAdCity: {
+            type: String
+        },
+        petAdState: {
+            type: String
+        },
+        petAdCountry: {
+            type: String
+        }
+    },
+    petResponsible: {
+        petRespFirstName: {
+            type: String
+        },
+        petRespLastName: {
+            type: String
+        },
+        petRespContact1: {
+            type: String
+        },
+        petRespContact2: {
+            type: String
+        },
+        petRespPrincipal: {
+            type: String
+        }
+    }
 });
 
 module.exports = mongoose.model('Pet', petSchema);
-
-// Criado o modelo de schema novo contato com nome, número, assunto e userId para que seja vinculado o contato a um usuário

@@ -1,0 +1,36 @@
+{
+	userId: "",
+	petId: "",
+	petVaccine: {
+		vaccData: "",
+		vaccName: "",
+		vaccAddInfo: "",
+		vaccPetWeight: "",
+		vaccNextOne: "",
+		vaccRespDoctor: ""
+	},
+	petVermifugation: {
+		vermData: "",
+		vermName: "",
+		vermQty: "",
+		vermAddInfo: "",
+		vermPetWeight: "",
+		vermNextOne: "",
+		vermRespDoctor: ""
+	},
+	petAntiFlea: {
+		fleaData: "",
+		fleaName: "",
+		fleaAddInfo: "",
+		fleaPetWeight: "",
+		fleaNextOne: "",
+		fleaRespDoctor: ""
+	},
+	petOtherProcedure: {
+		otherDate: "",
+		otherName: "",
+		otherAddInfo: "",
+		otherPetWeight: "",
+		otherRespDoctor: ""
+	}
+}

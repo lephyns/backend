@@ -23,45 +23,104 @@ module.exports = {
         if (request.payload === null) //Questiona se o payload é nulo
             return h.response({ message: 'Not json' }).code(400)
 
-        // console.log(request.payload) //Pega o valor da requisição e exibe no console
-
-        // Guardado essa instancia (new petModel) em uma constante
-        const pet = new petModel({ //Feito uma nova instancia para petModel 
+        const pet = new petModel({
+            userId: userId,
             petName: request.payload.petName,
             petSpecies: request.payload.petSpecies,
             petGender: request.payload.petGender,
-            petBirth: request.payload.petBirth,
             petBreed: request.payload.petBreed,
-            petAdStreet: request.payload.petAdStreet,
-            petAdNeighborhood: request.payload.petAdNeighborhood,
-            petAdNumber: request.payload.petAdNumber,
-            petAdInfo: request.payload.petAdInfo,
-            petAdCep: request.payload.petAdCep,
-            petAdCity: request.payload.petAdCity,
-            petAdState: request.payload.petAdState,
-            petResFirstName: request.payload.petResFirstName,
-            petRespLastName: request.payload.petRespLastName,
-            petRespContact1: request.payload.petRespContact1,
-            petRespContact2: request.payload.petRespContact2,
-            userId: userId
+            petWeight: request.payload.petWeight,
+            petBirth: request.payload.petBirth,
+            petCastrated: request.payload.petCastrated,
+            petAddress: {
+                petAdStreet: request.payload.petAddress.petAdStreet,
+                petAdNeighborhood: request.payload.petAddress.petAdNeighborhood,
+                petAdNumber: request.payload.petAddress.petAdNumber,
+                petAdInfo: request.payload.petAddress.petAdInfo,
+                petAdCep: request.payload.petAddress.petAdCep,
+                petAdCity: request.payload.petAddress.petAdCity,
+                petAdState: request.payload.petAddress.petAdState,
+                petAdCountry: request.payload.petAddress.petAdCountry,
+            },
+            petResponsible: {
+                petRespFirstName: request.payload.petResponsible.petRespFirstName,
+                petRespLastName: request.payload.petResponsible.petRespLastName,
+                petRespContact1: request.payload.petResponsible.petRespContact1,
+                petRespContact2: request.payload.petResponsible.petRespContact2,
+                petRespPrincipal: request.payload.petResponsible.petRespPrincipal
+            }
         })
 
-        // console.log(!contact.name) //O operador ! questiona se o objeto contact.name é undefined e exibe no console
+        if (!pet.petName)
+            return h.response({ message: 'Pet name is required.' }).code(409)
 
-        if (!pet.petName) //Verifica se o objeto contact.name é undefined 
-            return h.response({ message: 'Name is required.' }).code(409) //Se cair dentro desse if irá devolver o status code 409. Se cair nesse if o código é finalizado
+        if (!pet.petSpecies)
+            return h.response({ message: 'Pet species is required.' }).code(409)
 
-        if (!pet.petRespContact1)
-            return h.response({ message: 'Number is required.' }).code(409)//Além de retornar o statuscode ele também devolve uma mensagem que é verificada no teste `post.test.js`
+        if (!pet.petGender)
+            return h.response({ message: 'Pet gender is required.' }).code(409)
 
-        const dup = await petModel.findOne({ petName: pet.petName, userId: userId }).exec(); //Essa função busca um registro no banco
+        if (!pet.petBreed)
+            return h.response({ message: 'Pet breed is required.' }).code(409)
 
-        if (dup)
-            return h.response({ error: 'Duplicated pet.' }).code(409) //Retorna mensagem se o numero de telefone que está tentando cadastrar é o mesmo de um já existente
+        if (!pet.petWeight)
+            return h.response({ message: 'Pet weight is required.' }).code(409)
+
+        if (!pet.petBirth)
+            return h.response({ message: 'Pet birth is required.' }).code(409)
+
+        if (!pet.petCastrated)
+            return h.response({ message: 'Question pet castrated is required.' }).code(409)
+
+
+        if (!pet.petAddress.petAdStreet)
+            return h.response({ message: 'Street is required.' }).code(409)
+
+        if (!pet.petAddress.petAdNeighborhood)
+            return h.response({ message: 'Neighborhood is required.' }).code(409)
+
+        if (!pet.petAddress.petAdNumber)
+            return h.response({ message: 'Address number is required.' }).code(409)
+
+        if (!pet.petAddress.petAdInfo)
+            return h.response({ message: 'Additional information is required.' }).code(409)
+
+        if (!pet.petAddress.petAdCep)
+            return h.response({ message: 'CEP is required.' }).code(409)
+
+        if (!pet.petAddress.petAdCity)
+            return h.response({ message: 'City is required.' }).code(409)
+
+        if (!pet.petAddress.petAdState)
+            return h.response({ message: 'State is required.' }).code(409)
+
+        if (!pet.petAddress.petAdCountry)
+            return h.response({ message: 'Country is required.' }).code(409)
+
+
+        if (!pet.petResponsible.petRespFirstName)
+            return h.response({ message: 'Responsable first name is required.' }).code(409)
+
+        if (!pet.petResponsible.petRespLastName)
+            return h.response({ message: 'Responsable last name is required.' }).code(409)
+
+        if (!pet.petResponsible.petRespContact1)
+            return h.response({ message: 'Primary contact number is required.' }).code(409)
+
+        if (!pet.petResponsible.petRespContact2)
+            return h.response({ message: 'Secondary contact number is required.' }).code(409)
+
+        if (!pet.petResponsible.petRespPrincipal)
+            return h.response({ message: 'Main responsible field is required.' }).code(409)
+
+        const duplicated = await petModel.findOne({ petName: pet.petName, userId: userId }).exec();
+
+        if (duplicated)
+            return h.response({ error: 'Duplicated pet.' }).code(409)
         try {
-            let result = await pet.save() //Chamado o objeto contact e invocado a função salvar. Desta forma será salvo as informações no banco de dados através do Mongoose
+            let result = await pet.save()
             console.log(pet)
-            return h.response(result).code(200); //Na `response` estamos enviando o resultado esperado. Chamado a função `code()` colocando o status 200
+            return h.response(result).code(200);
         } catch (error) {
             return h.response(error).code(500)
         }

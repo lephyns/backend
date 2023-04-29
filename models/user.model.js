@@ -1,14 +1,23 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const Schema = mongoose.Schema
-
-const userSchema = new Schema({
-    fistName: String,
-    lastName: String,
-    email: String,
-    password: String
+var userSchema = new Schema({
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    fistName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
-
-//Importado o mongoose neste arquivo
