@@ -150,9 +150,9 @@ module.exports = {
 
         try {
 
-            const user = await procedureModel.findOne({ _id: request.params.procedureId, userId: userId })
+            const procedure = await procedureModel.findOne({ _id: request.params.procedureId, userId: userId })
 
-            if (!user)
+            if (!procedure)
                 return h.response({ error: 'There is no procedure with that id.' }).code(404)
 
             await procedureModel.deleteOne({ _id: request.params.procedureId, userId: userId })
