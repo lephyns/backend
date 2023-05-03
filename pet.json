@@ -1,0 +1,27 @@
+{
+    "userId": "userId",
+    "petName": "String",
+    "petSpecies": "String",
+    "petGender": "String",
+    "petBreed": "String",
+    "petWeight": "Number",
+    "petBith": "Date",
+    "petCastrated": "Boolean",
+    "petAddress": {
+        "petAdStreet": "String",
+        "petAdNeighborhood": "String",
+        "petAdNumber": "String",
+        "petAdInfo": "String",
+        "petAdCep": "String",
+        "petAdCity": "String",
+        "petAdState": "String",
+        "petAdCountry": "String"
+    },
+    "petResponsible": {
+        "petResFirstName": "String",
+        "petRespLastName": "String",
+        "petRespContact1": "String",
+        "petRespContact2": "String",
+        "petRespPrincipal": "Boolean"
+    }
+}
