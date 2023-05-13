@@ -9,6 +9,13 @@ const auth = async (userId) => {
         throw { error: 'Unauthorized', code: 401 }
 }
 
+const findIdByUserId = async (userId) => {
+    const foundProcedure = await procedureModel.findOne({ userId }).exec()
+    if (!foundProcedure)
+        throw { error: 'Procedure not found', code: 404 }
+    return foundProcedure._id
+}
+
 module.exports = {
     async create(request, h) {
 
@@ -164,7 +171,7 @@ module.exports = {
 
     async list(request, h) {
 
-        const userId = request.headers.authorization
+        const userId = request.query.userId
 
         try {
             await auth(userId)
@@ -172,13 +179,18 @@ module.exports = {
             return h.response(error).code(error.code)
         }
 
-        const procedures = await procedureModel.find({ userId: userId }).exec();
-        return procedures;
+        try {
+            const procedureId = await findIdByUserId(userId)
+            const procedures = await procedureModel.find({ _id: procedureId }).exec();
+            return h.response(procedures).code(200)
+        } catch (error) {
+            return h.response(error).code(500)
+        }
     },
-
+      
     async getProcedureById(request, h) {
 
-        const userId = request.headers.authorization
+        const userId = request.query.userId
 
         try {
             await auth(userId)
@@ -187,31 +199,27 @@ module.exports = {
         }
 
         try {
-            const procedure = await procedureModel.findOne({ _id: request.params.procedureId, userId: userId }).exec()
+            const procedureId = await findIdByUserId(userId)
+            const procedure = await procedureModel.findById(request.params.procedureId).exec()
 
             if (!procedure)
                 return h.response({ error: 'There is no procedure with that id.' }).code(404)
+
+            if (procedure._id.toString() !== procedureId.toString())
+                return h.response({ error: 'Unauthorized' }).code(401)
 
             return h.response(procedure).code(200)
         } catch (error) {
             return h.response(error).code(500)
         }
     },
-    async getProcedureByPetId(request, h) {
-        const userId = request.headers.authorization;
-    
-        try {
-          await auth(userId);
-        } catch (error) {
-          return h.response(error).code(error.code);
+
+    async findIdByUserId(userId) {
+        const user = await userModel.findOne({ userId: userId }, '_id').exec();
+        if (!user) {
+            throw { error: 'User not found', code: 404 };
         }
-    
-        try {
-          const procedures = await procedureModel.find({ petId: request.params.petId }).exec();
-    
-          return h.response(procedures).code(200);
-        } catch (error) {
-          return h.response(error).code(500);
-        }
-      },
+        return user._id;
+    }
+
 }
