@@ -36,9 +36,6 @@ var procedureSchema = new Schema({
         vermName: {
             type: String
         },
-        vermQty: {
-            type: String
-        },
         vermAddInfo: {
             type: String
         },

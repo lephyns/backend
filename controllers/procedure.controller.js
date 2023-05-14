@@ -36,7 +36,7 @@ module.exports = {
             petVermifugation: {
                 vermData: request.payload.petVermifugation.vermData,
                 vermName: request.payload.petVermifugation.vermName,
-                vermQty: request.payload.petVermifugation.vermQty,
+                // vermQty: request.payload.petVermifugation.vermQty,
                 vermAddInfo: request.payload.petVermifugation.vermAddInfo,
                 vermNextOne: request.payload.petVermifugation.vermNextOne,
                 vermRespDoctor: request.payload.petVermifugation.vermRespDoctor
@@ -78,9 +78,6 @@ module.exports = {
 
         if (!procedure.petVermifugation.vermName)
             return h.response({ message: 'Vermifugation name is required.' }).code(409)
-
-        if (!procedure.petVermifugation.vermQty)
-            return h.response({ message: 'Vermifugation quantity is required.' }).code(409)
 
         if (!procedure.petVermifugation.vermAddInfo)
             return h.response({ message: 'Vermifugation additional information is required.' }).code(409)

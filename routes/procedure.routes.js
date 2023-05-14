@@ -23,7 +23,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/procedure/pet/{petId}', // Caminho atualizado
+        path: '/procedure/pet/{petId}',
         handler: procedureController.getProcedureByPetId,
     }
 ]
