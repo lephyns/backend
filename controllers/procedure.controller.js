@@ -27,11 +27,11 @@ module.exports = {
             userId: userId,
             petId: request.payload.petId,
             petProcedure: {
-                procedureName: request.payload.petProcedure.procedureName,
-                procedureAddInfo: request.payload.petProcedure.procedureAddInfo,
-                procedureDate: request.payload.petProcedure.procedureDate,
-                procedureNextOne: request.payload.petProcedure.procedureNextOne,
-                procedureRespDoctor: request.payload.petProcedure.procedureRespDoctor
+                procedureName: request.payload.procedureName,
+                procedureAddInfo: request.payload.procedureAddInfo,
+                procedureDate: request.payload.procedureDate,
+                procedureNextOne: request.payload.procedureNextOne,
+                procedureRespDoctor: request.payload.procedureRespDoctor
             }
         })
 
