@@ -12,71 +12,20 @@ var procedureSchema = new Schema({
         required: true,
         ref: 'pet'
     },
-    petVaccine: {
-        vaccData: {
+    petProcedure: {
+        procedureName: {
             type: String
         },
-        vaccName: {
+        procedureAddInfo: {
             type: String
         },
-        vaccAddInfo: {
+        procedureDate: {
             type: String
         },
-        vaccNextOne: {
+        procedureNextOne: {
             type: String
         },
-        vaccRespDoctor: {
-            type: String
-        }
-    },
-    petVermifugation: {
-        vermData: {
-            type: String
-        },
-        vermName: {
-            type: String
-        },
-        vermAddInfo: {
-            type: String
-        },
-        vermNextOne: {
-            type: String
-        },
-        vermRespDoctor: {
-            type: String
-        }
-    },
-    petAntiFlea: {
-        fleaData: {
-            type: String
-        },
-        fleaName: {
-            type: String
-        },
-        fleaAddInfo: {
-            type: String
-        },
-        fleaNextOne: {
-            type: String
-        },
-        fleaRespDoctor: {
-            type: String
-        }
-    },
-    petOtherProcedure: {
-        otherDate: {
-            type: String
-        },
-        otherName: {
-            type: String
-        },
-        otherAddInfo: {
-            type: String
-        },
-        otherPetWeight: {
-            type: Number
-        },
-        otherRespDoctor: {
+        procedureRespDoctor: {
             type: String
         }
     }

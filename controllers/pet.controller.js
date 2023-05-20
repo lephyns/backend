@@ -10,45 +10,44 @@ const auth = async (userId) => {
 }
 
 module.exports = {
-    async create(request, h) { //cria um contato
-
-        const userId = request.headers.authorization //Obtém o usuário do header
-
+    async create(request, h) {
+        const userId = request.headers.authorization;
+      
         try {
-            await auth(userId)
+          await auth(userId);
         } catch (error) {
-            return h.response(error).code(error.code)
+          return h.response(error).code(error.code);
         }
-
-        if (request.payload === null) //Questiona se o payload é nulo
-            return h.response({ message: 'Not json' }).code(400)
-
+      
+        if (request.payload === null)
+          return h.response({ message: 'Not json' }).code(400);
+      
+        const petAddress = request.payload.petAddress ?? {};
+      
         const pet = new petModel({
-            userId: userId,
-            petName: request.payload.petName,
-            petSpecies: request.payload.petSpecies,
-            petGender: request.payload.petGender,
-            petBreed: request.payload.petBreed,
-            petWeight: request.payload.petWeight,
-            petBirth: request.payload.petBirth,
-            petCastrated: request.payload.petCastrated,
-            petAddress: {
-                petAdStreet: request.payload.petAddress.petAdStreet,
-                petAdNeighborhood: request.payload.petAddress.petAdNeighborhood,
-                petAdNumber: request.payload.petAddress.petAdNumber,
-                petAdInfo: request.payload.petAddress.petAdInfo,
-                petAdCep: request.payload.petAddress.petAdCep,
-                petAdCity: request.payload.petAddress.petAdCity,
-                petAdState: request.payload.petAddress.petAdState,
-                petAdCountry: request.payload.petAddress.petAdCountry,
-            },
-            petResponsible: {
-                petRespFirstName: request.payload.petResponsible.petRespFirstName,
-                petRespLastName: request.payload.petResponsible.petRespLastName,
-                petRespContact1: request.payload.petResponsible.petRespContact1,
-                petRespContact2: request.payload.petResponsible.petRespContact2,
-                petRespPrincipal: request.payload.petResponsible.petRespPrincipal
-            }
+          userId: userId,
+          petName: request.payload.petName,
+          petSpecies: request.payload.petSpecies,
+          petGender: request.payload.petGender,
+          petBreed: request.payload.petBreed,
+          petWeight: request.payload.petWeight,
+          petBirth: request.payload.petBirth,
+          petCastrated: request.payload.petCastrated,
+          petAddress: {
+            petAdStreet: request.payload.petAdStreet,
+            petAdNeighborhood: request.payload.petAdNeighborhood,
+            petAdNumber: request.payload.petAdNumber,
+            petAdInfo: request.payload.petAdInfo,
+            petAdCep: request.payload.petAdCep,
+            petAdCity: request.payload.petAdCity,
+            petAdState: request.payload.petAdState
+          },
+          petResponsible: {
+            petRespFirstName: request.payload.petRespFirstName,
+            petRespLastName: request.payload.petRespLastName,
+            petRespContact1: request.payload.petRespContact1,
+            petRespContact2: request.payload.petRespContact2
+          }
         })
 
         if (!pet.petName)
@@ -94,9 +93,6 @@ module.exports = {
         if (!pet.petAddress.petAdState)
             return h.response({ message: 'State is required.' }).code(409)
 
-        if (!pet.petAddress.petAdCountry)
-            return h.response({ message: 'Country is required.' }).code(409)
-
 
         if (!pet.petResponsible.petRespFirstName)
             return h.response({ message: 'Responsable first name is required.' }).code(409)
@@ -109,9 +105,6 @@ module.exports = {
 
         if (!pet.petResponsible.petRespContact2)
             return h.response({ message: 'Secondary contact number is required.' }).code(409)
-
-        if (!pet.petResponsible.petRespPrincipal)
-            return h.response({ message: 'Main responsible field is required.' }).code(409)
 
         const duplicated = await petModel.findOne({ petName: pet.petName, userId: userId }).exec();
 
