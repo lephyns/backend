@@ -25,5 +25,10 @@ module.exports = [
         method: 'GET',
         path: '/procedure/pet/{petId}',
         handler: procedureController.getProcedureByPetId,
+    },
+    {
+        method: 'PATCH',
+        path: '/procedure/{procedureId}',
+        handler: procedureController.update
     }
 ]
