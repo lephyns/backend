@@ -126,19 +126,43 @@ module.exports = {
     },
     async getProcedureByPetId(request, h) {
         const userId = request.headers.authorization;
-    
+
         try {
-          await auth(userId);
+            await auth(userId);
         } catch (error) {
-          return h.response(error).code(error.code);
+            return h.response(error).code(error.code);
         }
-    
+
         try {
-          const procedures = await procedureModel.find({ petId: request.params.petId }).exec();
-    
-          return h.response(procedures).code(200);
+            const procedures = await procedureModel.find({ petId: request.params.petId }).exec();
+
+            return h.response(procedures).code(200);
         } catch (error) {
-          return h.response(error).code(500);
+            return h.response(error).code(500);
         }
-      },
+    },
+    async update(request, h) {
+        const userId = request.headers.authorization;
+
+        try {
+            await auth(userId);
+        } catch (error) {
+            return h.response(error).code(error.code);
+        }
+
+        try {
+            const procedure = await procedureModel.findOneAndUpdate(
+                { _id: request.params.procedureId, userId: userId },
+                { $set: request.payload },
+                { new: true }
+            ).exec();
+
+            if (!procedure)
+                return h.response({ error: 'There is no procedure with that id.' }).code(404);
+
+            return h.response(procedure).code(200);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
+    }
 }
