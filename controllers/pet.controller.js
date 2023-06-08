@@ -12,42 +12,31 @@ const auth = async (userId) => {
 module.exports = {
     async create(request, h) {
         const userId = request.headers.authorization;
-      
+
         try {
-          await auth(userId);
+            await auth(userId);
         } catch (error) {
-          return h.response(error).code(error.code);
+            return h.response(error).code(error.code);
         }
-      
+
         if (request.payload === null)
-          return h.response({ message: 'Not json' }).code(400);
-      
-        const petAddress = request.payload.petAddress ?? {};
-      
+            return h.response({ message: 'Not json' }).code(400);
+
         const pet = new petModel({
-          userId: userId,
-          petName: request.payload.petName,
-          petSpecies: request.payload.petSpecies,
-          petGender: request.payload.petGender,
-          petBreed: request.payload.petBreed,
-          petWeight: request.payload.petWeight,
-          petBirth: request.payload.petBirth,
-          petCastrated: request.payload.petCastrated,
-          petAddress: {
-            petAdStreet: request.payload.petAdStreet,
-            petAdNeighborhood: request.payload.petAdNeighborhood,
-            petAdNumber: request.payload.petAdNumber,
-            petAdInfo: request.payload.petAdInfo,
-            petAdCep: request.payload.petAdCep,
-            petAdCity: request.payload.petAdCity,
-            petAdState: request.payload.petAdState
-          },
-          petResponsible: {
-            petRespFirstName: request.payload.petRespFirstName,
-            petRespLastName: request.payload.petRespLastName,
-            petRespContact1: request.payload.petRespContact1,
-            petRespContact2: request.payload.petRespContact2
-          }
+            userId: userId,
+            petName: request.payload.petName,
+            petSpecies: request.payload.petSpecies,
+            petGender: request.payload.petGender,
+            petBreed: request.payload.petBreed,
+            petWeight: request.payload.petWeight,
+            petBirth: request.payload.petBirth,
+            petCastrated: request.payload.petCastrated,
+            petResponsible: {
+                petRespFirstName: request.payload.petResponsible.petRespFirstName,
+                petRespLastName: request.payload.petResponsible.petRespLastName,
+                petRespContact1: request.payload.petResponsible.petRespContact1,
+                petRespContact2: request.payload.petResponsible.petRespContact2
+            }
         })
 
         if (!pet.petName)
@@ -70,29 +59,6 @@ module.exports = {
 
         if (!pet.petCastrated)
             return h.response({ message: 'Question pet castrated is required.' }).code(409)
-
-
-        if (!pet.petAddress.petAdStreet)
-            return h.response({ message: 'Street is required.' }).code(409)
-
-        if (!pet.petAddress.petAdNeighborhood)
-            return h.response({ message: 'Neighborhood is required.' }).code(409)
-
-        if (!pet.petAddress.petAdNumber)
-            return h.response({ message: 'Address number is required.' }).code(409)
-
-        if (!pet.petAddress.petAdInfo)
-            return h.response({ message: 'Additional information is required.' }).code(409)
-
-        if (!pet.petAddress.petAdCep)
-            return h.response({ message: 'CEP is required.' }).code(409)
-
-        if (!pet.petAddress.petAdCity)
-            return h.response({ message: 'City is required.' }).code(409)
-
-        if (!pet.petAddress.petAdState)
-            return h.response({ message: 'State is required.' }).code(409)
-
 
         if (!pet.petResponsible.petRespFirstName)
             return h.response({ message: 'Responsable first name is required.' }).code(409)
@@ -176,8 +142,31 @@ module.exports = {
         } catch (error) {
             return h.response(error).code(500) // Se algum erro ocorrer, exibe o erro com o status 500
         }
-    }
+    },
+    async update(request, h) {
+        const userId = request.headers.authorization;
 
+        try {
+            await auth(userId);
+        } catch (error) {
+            return h.response(error).code(error.code);
+        }
+
+        try {
+            const pet = await petModel.findOneAndUpdate(
+                { _id: request.params.petId, userId: userId },
+                { $set: request.payload },
+                { new: true }
+            ).exec();
+
+            if (!pet)
+                return h.response({ error: 'There is no pet with that id.' }).code(404);
+
+            return h.response(pet).code(200);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
+    }
 }
 
 // async para ser assíncrona e ter uma promessa
