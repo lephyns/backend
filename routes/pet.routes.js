@@ -20,6 +20,11 @@ module.exports = [
         method: 'GET',
         path: '/pet/{petId}',
         handler: petController.getPetById
+    },
+    {
+        method: 'PATCH',
+        path: '/pet/{petId}',
+        handler: petController.update
     }
 ]
 

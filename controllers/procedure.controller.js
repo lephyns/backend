@@ -26,36 +26,30 @@ module.exports = {
         const procedure = new procedureModel({
             userId: userId,
             petId: request.payload.petId,
-            petProcedure: {
-                procedureName: request.payload.procedureName,
-                procedureAddInfo: request.payload.procedureAddInfo,
-                procedureDate: request.payload.procedureDate,
-                procedureNextOne: request.payload.procedureNextOne,
-                procedureRespDoctor: request.payload.procedureRespDoctor
-            }
+            procedureName: request.payload.procedureName,
+            procedureAddInfo: request.payload.procedureAddInfo,
+            procedureDate: request.payload.procedureDate,
+            procedureNextOne: request.payload.procedureNextOne,
+            procedureRespDoctor: request.payload.procedureRespDoctor
         })
 
-        if (!procedure.petProcedure.procedureName)
+        if (!procedure.userId)
+        return h.response({ message: 'User ID is required.' }).code(409)
+
+        if (!procedure.procedureName)
             return h.response({ message: 'Procedure name is required.' }).code(409)
 
-        if (!procedure.petProcedure.procedureAddInfo)
+        if (!procedure.procedureAddInfo)
             return h.response({ message: 'Procedure additional information is required.' }).code(409)
 
-        if (!procedure.petProcedure.procedureDate)
+        if (!procedure.procedureDate)
             return h.response({ message: 'Procedure date is required.' }).code(409)
 
-        if (!procedure.petProcedure.procedureNextOne)
+        if (!procedure.procedureNextOne)
             return h.response({ message: 'Procedure next one is required.' }).code(409)
 
-        if (!procedure.petProcedure.procedureRespDoctor)
+        if (!procedure.procedureRespDoctor)
             return h.response({ message: 'A doctor responsible for the procedure is required.' }).code(409)
-
-
-        // const duplicated = await procedureModel.findOne({ petId: request.payload.petId, userId: userId, vaccine: procedure.petVaccine.vaccName}).exec();
-
-        // if (duplicated)
-        //     return h.response({ error: 'Duplicated vaccine.' }).code(409)
-
 
         try {
             let result = await procedure.save()
@@ -88,7 +82,6 @@ module.exports = {
             return h.response(error).code(500)
         }
     },
-
     async list(request, h) {
 
         const userId = request.headers.authorization

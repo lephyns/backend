@@ -28,32 +28,6 @@ var petSchema = new Schema({
     petCastrated: {
         type: String
     },
-    petAddress: {
-        petAdStreet: {
-            type: String
-        },
-        petAdNeighborhood: {
-            type: String
-        },
-        petAdNumber: {
-            type: String
-        },
-        petAdInfo: {
-            type: String
-        },
-        petAdCep: {
-            type: String
-        },
-        petAdCity: {
-            type: String
-        },
-        petAdState: {
-            type: String
-        },
-        petAdCountry: {
-            type: String
-        }
-    },
     petResponsible: {
         petRespFirstName: {
             type: String

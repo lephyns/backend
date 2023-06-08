@@ -8,26 +8,22 @@ var procedureSchema = new Schema({
         ref: 'user'
     },
     petId: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'pet'
+        type: String
     },
-    petProcedure: {
-        procedureName: {
-            type: String
-        },
-        procedureAddInfo: {
-            type: String
-        },
-        procedureDate: {
-            type: String
-        },
-        procedureNextOne: {
-            type: String
-        },
-        procedureRespDoctor: {
-            type: String
-        }
+    procedureName: {
+        type: String
+    },
+    procedureAddInfo: {
+        type: String
+    },
+    procedureDate: {
+        type: String
+    },
+    procedureNextOne: {
+        type: String
+    },
+    procedureRespDoctor: {
+        type: String
     }
 });
 
