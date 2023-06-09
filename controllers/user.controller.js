@@ -8,6 +8,16 @@ module.exports = {
         //Questiona se o payload é nulo
         if (request.payload === null) 
             return h.response({ message: 'Not json' }).code(400)
+
+        //Feito uma nova instancia para userModel 
+        const user = new userModel({ 
+            email: request.payload.email,
+            //Com a pacote do node MD5 é criptografado a senha do usuário
+            password: md5(request.payload.password), 
+            fistName: request.payload.firstName,
+            lastName: request.payload.lastName
+        })
+
         //Verifica se o objeto user.name é undefined 
         if (!request.payload.email) 
             //Se cair dentro desse if irá devolver o status code 409. Se cair nesse if o código é finalizado
@@ -22,15 +32,6 @@ module.exports = {
 
         if (!request.payload.lastName)
             return h.response({ message: 'Last name is required.' }).code(409)
-
-        //Feito uma nova instancia para userModel 
-        const user = new userModel({ 
-            email: request.payload.email,
-            //Com a pacote do node MD5 é criptografado a senha do usuário
-            password: md5(request.payload.password), 
-            fistName: request.payload.firstName,
-            lastName: request.payload.lastName
-        })
 
         //Essa função busca um registro no banco para saber se já existe
         const duplicated = await userModel.findOne({ email: user.email }).exec(); 
